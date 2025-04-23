@@ -1,41 +1,6 @@
 #include-once
 
-#include <AutoItObject.au3>
-#include <AutoItConstants.au3>
-#include <GUIConstantsEx.au3>
-
 #include "Form.au3"
-
-_AutoItObject_StartUp()
-
-Global $oError = ObjEvent("AutoIt.Error", _ErrFunc)
-
-Global $guiObjects = GUIObjects()
-
-$guiObjects.Form("Form1", "Form Title", 300, 400, 300, 500)
-
-$guiObjects.Form1.Button("Button1", "Button Text", 40, 40)
-
-$guiObjects.Form("Form2", "Form2 Title", 250, 350, 605, 500)
-
-$guiObjects.Form2.Button("Button1", "Button Text", 10, 10)
-
-$guiObjects.Form1.Show()
-
-$guiObjects.Form2.Show()
-
-Do
-    Switch GUIGetMsg()
-        Case $guiObjects.Form1.Button1.ControlID
-            Consolewrite("=D" & @CRLF)
-
-        Case $guiObjects.Form2.Button1.ControlID
-            Consolewrite("=D =D" & @CRLF)
-
-        Case $GUI_EVENT_CLOSE
-            Exit
-    EndSwitch
-Until False
 
 Func GUIObjects()
     Local Const $this = _AutoItObject_Class()
@@ -44,14 +9,21 @@ Func GUIObjects()
 
     $this.AddMethod("Form", "GUIObjects_Form")
 
+	$this.AddMethod("DebugPrint", "GUIObjects_DebugPrint", True)
+	$this.AddMethod("SetDebug"  , "GUIObjects_SetDebug"  , True)
+    
+	$this.AddProperty("Debug", $ELSCOPE_PRIVATE, False)
+
     Return $this.Object 
 EndFunc
 
-Func _ErrFunc()
-	 ConsoleWrite(" ==> COM Error intercepted !"                  & @CRLF & @TAB & _
-	 			  "Script Path: " & @TAB & @ScriptDir             & @CRLF & @TAB & _
-                  "Description: " & @TAB & $oError.windescription         & @TAB & _
-				  "Script Line: " & @TAB & $oError.scriptline     & @CRLF & @CRLF)
+Func GUIObjects_SetDebug(ByRef $this, Const $debug = True)
+    $this.Debug = $debug
+EndFunc
 
-    Exit
+Func GUIObjects_DebugPrint(ByRef Const $this, Const ByRef $message)
+    Switch $this.Debug 
+        Case True 
+            ConsoleWrite($message & @CRLF)
+    EndSwitch
 EndFunc
