@@ -1,5 +1,7 @@
 #include-once
 
+#include "Control.au3"
+
 Func GUIObjects_Form(ByRef $this, Const $name, Const $title, Const $width, Const $height, Const $left = -1, Const $top = -1, Const $style = -1, Const $exStyle = -1)
     Switch $left <> -1 And $top = -1
         Case False
@@ -69,7 +71,7 @@ Func GUIObjects_Form(ByRef $this, Const $name, Const $title, Const $width, Const
             Return $object
         Case True
             If $this.Debug Then $this.DebugPrint("If width is defined then top must be defined as well.")
-            
+
             Return SetError(-1, 0, False)
     EndSwitch
 EndFunc

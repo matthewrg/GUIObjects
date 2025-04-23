@@ -5,7 +5,6 @@
 #include <GUIConstantsEx.au3>
 
 #include "Form.au3"
-#include "Control.au3"
 
 _AutoItObject_StartUp()
 
