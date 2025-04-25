@@ -9,29 +9,48 @@ Global $oError = ObjEvent("AutoIt.Error", _ErrFunc)
 
 Global $guiObjects = GUIObjects()
 
-$guiObjects.Form("Form1", "Form Title", 300, 400, 300, 500)
+$guiObjects.Form("Example1", "Example1 Title", 300, 400, 300, 500)
 
-$guiObjects.Form1.SetDefBkColor(0x55EE99)
+$guiObjects.Example1.SetDefBkColor(0x55EE99)
 
-$guiObjects.Form1.Button("Button1", "Button Text", 40, 40)
+$guiObjects.Example1.Button("Button1", "Delete This Form", 10, 10)
 
-$guiObjects.Form("Form2", "Form2 Title", 250, 350, 605, 500)
+$guiObjects.Example1.Button("Button2", "Delete Child Form", 50, 50)
 
-$guiObjects.Form2.SetDefColor(0xFF0000)
+$guiObjects.Example1.Button("Button3", "=D", 90, 90)
 
-$guiObjects.Form2.Button("Button1", "Button Text", 10, 10)
+$guiObjects.Example1.AVI("AVI1", "V:\Coding\GUIObjects\GUIObjects\resources\sampleAVI.avi", 1, 150, 10)
 
-$guiObjects.Form1.Show()
+$guiObjects.Example1.AVI1.Start()
 
-$guiObjects.Form2.Show()
+$guiObjects.Example1.SetCursor(4, 1)
+
+$guiObjects.Example1.Show()
+
+$guiObjects.Example1.Child("Child1", "Child1 Example", 250, 350, 305, -20)
+
+$guiObjects.Example1.Child1.Button("Button1", "=D =D", 90, 90)
+
+$guiObjects.Example1.Child1.SetCursor(9)
+
+$guiObjects.Example1.Child1.Show()
 
 Do
     Switch GUIGetMsg()
-        Case $guiObjects.Form1.Button1.ControlID
-            Consolewrite("=D" & @CRLF)
+        Case 0
+            ContinueLoop
+            
+        Case $guiObjects.Example1.Button1.ControlID
+            $guiObjects.Example1.Delete()
+            
+        Case $guiObjects.Example1.Button2.ControlID
+            $guiObjects.Example1.Child1.Delete()
 
-        Case $guiObjects.Form2.Button1.ControlID
-            Consolewrite("=D =D" & @CRLF)
+        Case $guiObjects.Example1.Button3.ControlID
+            ConsoleWrite("=D" & @CRLF)
+
+        Case $guiObjects.Example1.Child1.Button1.ControlID
+            ConsoleWrite("=D =D Yay! =D =D" & @CRLF)
 
         Case $GUI_EVENT_CLOSE
             Exit

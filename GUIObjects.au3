@@ -1,6 +1,7 @@
 #include-once
 
 #include "Form.au3"
+#include "Control.au3"
 
 Func GUIObjects()
     Local Const $this = _AutoItObject_Class()
