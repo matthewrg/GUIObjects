@@ -19,9 +19,9 @@ $guiObjects.Example1.Button("Button2", "Delete Child Form", 50, 50)
 
 $guiObjects.Example1.Button("Button3", "=D", 90, 90)
 
-$guiObjects.Example1.AVI("AVI1", "V:\Coding\GUIObjects\GUIObjects\resources\sampleAVI.avi", 1, 150, 10)
+$guiObjects.Example1.AVI("AVI1", "V:\Coding\GUIObjects\GUIObjects\resources\sampleAVI.avi", -1, 150, 10)
 
-$guiObjects.Example1.AVI1.Start()
+$guiObjects.Example1.AVI1.Play()
 
 $guiObjects.Example1.SetCursor(4, 1)
 
@@ -42,6 +42,7 @@ Do
             
         Case $guiObjects.Example1.Button1.ControlID
             $guiObjects.Example1.Delete()
+            Exit
             
         Case $guiObjects.Example1.Button2.ControlID
             $guiObjects.Example1.Child1.Delete()
@@ -50,6 +51,8 @@ Do
             ConsoleWrite("=D" & @CRLF)
 
         Case $guiObjects.Example1.Child1.Button1.ControlID
+            Consolewrite($guiObjects.Example1.Button3.Text("=D =D Yay! =D =D") & @CRLF)
+
             ConsoleWrite("=D =D Yay! =D =D" & @CRLF)
 
         Case $GUI_EVENT_CLOSE
@@ -60,7 +63,7 @@ Until False
 Func _ErrFunc()
 	 ConsoleWrite(" ==> COM Error intercepted !"                  & @CRLF & @TAB & _
 	 			  "Script Path: " & @TAB & @ScriptDir             & @CRLF & @TAB & _
-                  "Description: " & @TAB & $oError.windescription & @TAB & _
+                  "Description: " & @TAB & $oError.windescription & @TAB  &        _
 				  "Script Line: " & @TAB & $oError.scriptline     & @CRLF & @CRLF)
 
     Exit

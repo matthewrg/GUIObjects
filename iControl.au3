@@ -14,6 +14,8 @@ Func _iControl()
     $this.AddMethod("GetStyle"  , "GUIOBjects_Control_GetStyle"  )
     $this.AddMethod("GetExStyle", "GUIOBjects_Control_GetExStyle")
     $this.AddMethod("ReceiveMsg", "GUIOBjects_Control_ReceiveMsg")
+    $this.AddMethod("SetCursor" , "GUIOBjects_Control_SetCursor" )
+    $this.AddMethod("OnEvent"   , "GUIOBjects_Control_OnEvent"   )
 
     $this.AddProperty("ControlID", $ELSCOPE_PUBLIC)
     $this.AddProperty("Handle"   , $ELSCOPE_PUBLIC)
@@ -44,6 +46,10 @@ Func GUIOBjects_Control_ReceiveMsg(ByRef $this, Const $msg, Const $wParam = 1, C
     Return GUICtrlReceiveMsg($msg, $wParam, $lParamType)
 EndFunc
 
-Func GUIOBjects_Control_SetCursor(ByRef $this)
-    Return GUICtrlSetCursor()
+Func GUIOBjects_Control_SetCursor(ByRef $this, Const $cursorID)
+    Return GUICtrlSetCursor($this.ControlID, $cursorID)
+EndFunc
+
+Func GUIOBjects_Control_OnEvent(ByRef $this, Const $function)
+    Return GUICtrlSetOnEvent($this.ControlID, $function)
 EndFunc

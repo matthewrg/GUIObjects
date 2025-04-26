@@ -1,9 +1,9 @@
 #include-once
 
-#include <ButtonConstants.au3>
+#include <CheckboxConstants.au3>
 
 Func GUIObjects_Button(ByRef $this, Const $name, Const $text, Const $left, Const $top, Const $width = -1, Const $height = -1, Const $style = -1, Const $exStyle = -1)
-	Local Const $controlID = GUICtrlCreateButton($text, $left, $top, $width, $height, BitOR($GUI_SS_DEFAULT_BUTTON, $BS_ICON, $style), $exStyle)
+	Local Const $controlID = GUICtrlCreateCheckbox($text, $left, $top, $width, $height, BitOR($GUI_SS_DEFAULT_BUTTON, $BS_ICON, $style), $exStyle)
 
     Local Const $ctrlPosition = ControlGetPos(HWnd($this.Handle), '', $controlID)
 
@@ -14,8 +14,10 @@ Func GUIObjects_Button(ByRef $this, Const $name, Const $text, Const $left, Const
 	_AutoItObject_AddMethod($ctrl, "Image"    , "GUIObjects_Button_Image"    )
 	_AutoItObject_AddMethod($ctrl, "BkColor"  , "GUIObjects_Button_BkColor"  )
 	_AutoItObject_AddMethod($ctrl, "TextColor", "GUIObjects_Button_TextColor")
+	_AutoItObject_AddMethod($ctrl, "Cursor"   , "GUIObjects_Button_Cursor"   )
 	_AutoItObject_AddMethod($ctrl, "Text"     , "GUIObjects_Button_Text"     )
 	_AutoItObject_AddMethod($ctrl, "Font"     , "GUIObjects_Button_Font"     )
+	_AutoItObject_AddMethod($ctrl, "OnEvent"  , "GUIObjects_Button_OnEvent"  )
 
 	$ctrl.ControlID = $controlID
 	$ctrl.Handle    = $handle
@@ -32,22 +34,3 @@ Func GUIObjects_Button(ByRef $this, Const $name, Const $text, Const $left, Const
     Return $ctrl
 EndFunc
 
-Func GUIObjects_Button_Image(Const ByRef $this, Const $filename, Const $iconname = -1, Const $icontype = 1)
-	Return GUICtrlSetImage($this.ControlID, $filename, $iconname, $icontype)
-EndFunc
-
-Func GUIObjects_Button_BkColor(Const ByRef $this, Const $bkColor)
-	Return GUICtrlSetBkColor($this.ControlID, $bkColor)
-EndFunc
-
-Func GUIObjects_Button_TextColor(Const ByRef $this, Const $textcolor)
-	Return GUICtrlSetColor($this.ControlID, $textcolor)
-EndFunc
-
-Func GUIObjects_Button_Text(ByRef $this, Const $text)
-	Return GUICtrlSetData($this.ControlID, $text)
-EndFunc
-
-Func GUIObjects_Button_Font(Const ByRef $this, Const $size = 8.5, Const $weight = 0, Const $attribute = 0, Const $fontname = '', Const $quality = 0)
-	Return GUICtrlSetFont($this.ControlID, $size, $weight, $attribute, $fontname, $quality)
-EndFunc
