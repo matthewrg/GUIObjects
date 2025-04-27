@@ -1,17 +1,16 @@
 #include-once
 
+#include "Control.au3"
+
 #include <AVIConstants.au3>
 #include <GuiAVI.au3>
-#include <GUIConstantsEx.au3>
-
-#include "iControl.au3"
 
 Func GUIObjects_AVI(ByRef $this, Const $name, Const $filepath, Const $subfileID = -1, Const $left = 0, Const $top = 0, Const $width = 0, Const $height = 0, Const $style = 0x00000006, Const $exStyle = 0x00000000)
     Local Const $handle = _GUICtrlAVI_Create(HWnd($this.Handle), $filepath, $subfileID, $left, $top, $width, $height, $style, $exStyle)
 
     Local Const $ctrlPosition = ControlGetPos(HWnd($this.Handle), '', $handle)
 
-	Local $ctrl = _AutoItObject_Create(_iControl())
+	Local $ctrl = _AutoItObject_Create(Control())
 
 	_AutoItObject_AddMethod($ctrl, "Close"    , "GUIObjects_AVI_Close"    )
 	_AutoItObject_AddMethod($ctrl, "Play"     , "GUIObjects_AVI_Play"     )
@@ -20,6 +19,8 @@ Func GUIObjects_AVI(ByRef $this, Const $name, Const $filepath, Const $subfileID 
 	_AutoItObject_AddMethod($ctrl, "OpenEx"   , "GUIObjects_AVI_OpenEx"   )
 	_AutoItObject_AddMethod($ctrl, "Seek"     , "GUIObjects_AVI_Seek"     )
 	_AutoItObject_AddMethod($ctrl, "Show"     , "GUIObjects_AVI_Show"     )
+	_AutoItObject_AddMethod($ctrl, "Text"     , "GUIObjects_AVI_Text"     )
+	_AutoItObject_AddMethod($ctrl, "Font"     , "GUIObjects_AVI_Font"     )
 	_AutoItObject_AddMethod($ctrl, "Hide"     , "GUIObjects_AVI_Hide"     )
 	_AutoItObject_AddMethod($ctrl, "Destroy"  , "GUIObjects_AVI_Destroy"  )
 	_AutoItObject_AddMethod($ctrl, "IsPlaying", "GUIObjects_AVI_IsPlaying")

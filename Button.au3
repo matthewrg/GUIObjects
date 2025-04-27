@@ -9,23 +9,11 @@ Func GUIObjects_Button(ByRef $this, Const $name, Const $text, Const $left, Const
 
 	Local Const $handle = GUICtrlGetHandle($controlID)
 
-	Local $ctrl = _AutoItObject_Create(_iControl())
+	Local $ctrl = _AutoItObject_Create(Control())
 	
-	_AutoItObject_AddMethod($ctrl, "Image"    , "GUIObjects_Button_Image"    )
-	_AutoItObject_AddMethod($ctrl, "BkColor"  , "GUIObjects_Button_BkColor"  )
-	_AutoItObject_AddMethod($ctrl, "TextColor", "GUIObjects_Button_TextColor")
-	_AutoItObject_AddMethod($ctrl, "Text"     , "GUIObjects_Button_Text"     )
-	_AutoItObject_AddMethod($ctrl, "Font"     , "GUIObjects_Button_Font"     )
+	_AutoItObject_AddMethod($ctrl, "Image", "GUIObjects_Button_Image")
 
-	$ctrl.ControlID = $controlID
-	$ctrl.Handle    = $handle
-	$ctrl.Text      = $text
-	$ctrl.Left      = $left
-	$ctrl.Top       = $top
-	$ctrl.Width     = $ctrlPosition[2]
-	$ctrl.Height    = $ctrlPosition[3]
-	$ctrl.Style     = _WinAPI_GetWindowLong($handle, $GWL_STYLE)
-	$ctrl.ExStyle   = _WinAPI_GetWindowLong($handle, $GWL_EXSTYLE)
+	$ctrl.SetAttributes($controlID, $handle, $text, $left, $top, $ctrlPosition)
 
     _AutoItObject_AddProperty($this, $name, $ELSCOPE_READONLY, $ctrl)
 
@@ -34,20 +22,4 @@ EndFunc
 
 Func GUIObjects_Button_Image(Const ByRef $this, Const $filename, Const $iconname = -1, Const $icontype = 1)
 	Return GUICtrlSetImage($this.ControlID, $filename, $iconname, $icontype)
-EndFunc
-
-Func GUIObjects_Button_BkColor(Const ByRef $this, Const $bkColor)
-	Return GUICtrlSetBkColor($this.ControlID, $bkColor)
-EndFunc
-
-Func GUIObjects_Button_TextColor(Const ByRef $this, Const $textcolor)
-	Return GUICtrlSetColor($this.ControlID, $textcolor)
-EndFunc
-
-Func GUIObjects_Button_Text(ByRef $this, Const $text)
-	Return GUICtrlSetData($this.ControlID, $text)
-EndFunc
-
-Func GUIObjects_Button_Font(Const ByRef $this, Const $size = 8.5, Const $weight = 0, Const $attribute = 0, Const $fontname = '', Const $quality = 0)
-	Return GUICtrlSetFont($this.ControlID, $size, $weight, $attribute, $fontname, $quality)
 EndFunc
