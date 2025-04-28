@@ -1,8 +1,9 @@
 #include-once
 
 #include <EditConstants.au3>
+#include <ScrollBarsConstants.au3>
 
-Func GUIObjects_Edit(ByRef $this, Const $name, Const $text, Const $left, Const $top, Const $width = 150, Const $height = 150, Const $style = 0x003010C4, Const $exStyle = 0x00000200)
+Func GUIObjects_Edit(Const ByRef $this, Const $name, Const $text, Const $left, Const $top, Const $width = 150, Const $height = 150, Const $style = 0x003010C4, Const $exStyle = 0x00000200)
 	Local Const $handle = _GUICtrlEdit_Create($text, $left, $top, $width, $height, $style, $exStyle)
 
 	Local $ctrl = _AutoItObject_Create(Control())
@@ -75,23 +76,22 @@ EndFunc
 	Description:
 		Appends text.
 
-	Return:
+	Returns:
 		None
 #ce
-Func GUIObjects_Edit_AppendText(ByRef $this, Const $text)
-	Return _GUICtrlEdit_AppendText(HWnd($this.Handle), $text)
+Func GUIObjects_Edit_AppendText(Const ByRef $this, Const $text)
+	_GUICtrlEdit_AppendText(HWnd($this.Handle), $text)
 EndFunc	
 
 #cs
 	Description:
 		Prevents updating of the control until the _GUICtrlEdit_EndUpdate function is called.
 
-	Return:
+	Returns:
 		Success: True. 
-
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_Beginupdate(ByRef $this)
+Func GUIObjects_Edit_Beginupdate(Const ByRef $this)
 	Return _GUICtrlEdit_BeginUpdate(HWnd($this.Handle))
 EndFunc
 
@@ -99,12 +99,14 @@ EndFunc
 	Description:
 		Determines whether there are any actions in an edit control's undo queue.
 
-	Return:
+	Returns:
 		True: If there are actions in the control's undo queue.
-
 		False: If the undo queue is empty.
+
+	Remarks:
+		If the undo queue is not empty, you can call the _GUICtrlEdit_Undo() to undo the most recent operation.
 #ce
-Func GUIObjects_Edit_CanUndo(ByRef $this)
+Func GUIObjects_Edit_CanUndo(Const ByRef $this)
 	Return _GUICtrlEdit_CanUndo(HWnd($this.Handle))
 EndFunc
 
@@ -116,527 +118,775 @@ EndFunc
 		$x: horizontal position 
 		$y: vertical position 
 
-	Return:
+	Returns:
 		Returns an array in the following format:
 			[0] - 0-based index of the character nearest the specified point
 			[1] - 0-based index of the line that contains the character
 #ce
-Func GUIObjects_Edit_CharFromPos(ByRef $this, Const $x, Const $y)
+Func GUIObjects_Edit_CharFromPos(Const ByRef $this, Const $x, Const $y)
 	Return _GUICtrlEdit_CharFromPos(HWnd($this.Handle), $x, $y)
 EndFunc
 
 #cs
 	Description:
+		Delete the Edit control
 
-	Return:
-		Success: True. 
-
+	Returns:
+		Success: True, $hWnd is set to 0.
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_Destroy(ByRef $this)
+Func GUIObjects_Edit_Destroy(Const ByRef $this)
 	Return _GUICtrlEdit_Destroy(HWnd($this.Handle))	
 EndFunc
 
 #cs
 	Description:
+		Resets the undo flag of an edit control.
 
-	Return:
-		Success: True. 
+	Returns:
+		None.
 
-		Failure: False. 
+	Remarks:
+		The undo flag is automatically reset whenever the edit control receives a _GUICtrlEdit_SetText().
 #ce
-Func GUIObjects_Edit_EmptyUndoBuffer(ByRef $this)
-	
+Func GUIObjects_Edit_EmptyUndoBuffer(Const ByRef $this)
+	_GUICtrlEdit_EmptyUndoBuffer(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Enables screen repainting that was turned off with the _GUICtrlEdit_BeginUpdate function.
 
-	Return:
+	Returns:
 		Success: True. 
-
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_EndUpdate(ByRef $this)
-	
+Func GUIObjects_Edit_EndUpdate(Const ByRef $this)
+	Return _GUICtrlEdit_EndUpdate(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Initiates a find dialog.		
 
-	Return:
-		Success: True. 
+	Parameters:
+		$replace:
+			True: show option
+			False: hide option
 
-		Failure: False. 
+	Returns:
+		None. 
+
+	Remarks:
+		If you use text from the edit control and that text gets replaced the function will no longer function correctly.
 #ce
-Func GUIObjects_Edit_Find(ByRef $this)
-	
+Func GUIObjects_Edit_Find(Const ByRef $this, Const $replace = False)
+	_GUICtrlEdit_Find(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Determines whether an edit control includes soft line-break characters.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$softBreak:
+			True: inserts the characters
+			False: removes the characters
 
-		Failure: False. 
+	Returns:
+		Return is identical to the $softBreak parameter. 
+
+	Remarks:
+		A soft line break consists of two carriage returns and a line feed and is inserted 
+		at the end of a line that is broken because of wordwrapping.
+
+		This function affects only the text returned by the _GUICtrlEdit_GetText() function.
+
+		It has no effect on the display of the text within the edit control.
+
+		This function does not affect a line that ends with a hard line break.
+		A hard line break consists of one carriage return and a line feed.
 #ce
-Func GUIObjects_Edit_FmtLines(ByRef $this)
-	
+Func GUIObjects_Edit_FmtLines(Const ByRef $this, Const $softBreak = False)
+	Return _GUICtrlEdit_FmtLines(HWnd($this.Handle), $softBreak)
 EndFunc
 
 #cs
 	Description:
+		Gets the cue banner text displayed in the edit control.
 
-	Return:
-		Success: True. 
+	Returns:
+		Success: the cue banner text. 
+		Failure: an empty string ''. 
 
-		Failure: False. 
+	Remarks:
+		The cue banner is text that is displayed in the edit control when there is no selection.
+		Windows Vista or later.
 #ce
-Func GUIObjects_Edit_GetCueBanner(ByRef $this)
-	
+Func GUIObjects_Edit_GetCueBanner(Const ByRef $this)
+	Return _GUICtrlEdit_GetCueBanner(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the 0-based index of the uppermost visible line in a multiline edit control
 
-	Return:
-		Success: True. 
+	Returns:
+		Returns a 0-based index of the uppermost visible line in a multiline edit control. 
 
-		Failure: False. 
+	Remarks:
+		The number of lines and the length of the lines in an edit control depend on the
+		width of the control and the current Wordwrap setting.
 #ce
-Func GUIObjects_Edit_GetFirstVisibleLine(ByRef $this)
-	
+Func GUIObjects_Edit_GetFirstVisibleLine(Const ByRef $this)
+	Return _GUICtrlEdit_GetFirstVisibleLine(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Gets the current text limit for an edit control.
 
-	Return:
-		Success: True. 
+	Returns:
+		Returns the text limit. 
 
-		Failure: False. 
+	Remarks
+		The text limit is the maximum amount of text, in TCHARs, that the control can contain.
+		For ANSI text, this is the number of bytes; for Unicode text, this is the number of characters.
+		Two documents with the same character limit will yield the same text limit, even 
+		if one is ANSI and the other is Unicode.
 #ce
-Func GUIObjects_Edit_GetLimitText(ByRef $this)
-	
+Func GUIObjects_Edit_GetLimitText(Const ByRef $this)
+	Return _GUICtrlEdit_GetLimitText(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves a line of text from an edit control
 
-	Return:
-		Success: True. 
+	Parameters:
+		$line: 0-based line index to get 
 
-		Failure: False. 
+	Returns:
+		Success: the line of text. 
+		Failure: an empty string. 
 #ce
-Func GUIObjects_Edit_GetLine(ByRef $this)
-	
+Func GUIObjects_Edit_GetLine(Const ByRef $this, Const $line)
+	Return _GUICtrlEdit_GetLine(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the number of lines.
 
-	Return:
-		Success: True. 
+	Returns:
+		Success: the total number of text lines.
+		Failure: 1 
 
-		Failure: False. 
+	Remarks
+		If the control has no text, the return value is 1. The return value will 
+		never be less than 1.
+
+		The _GUICtrlEdit_GetLineCount() retrieves the total number of text lines, 
+		not just the number of lines that are currently visible.
+
+		If the Wordwrap feature is enabled, the number of lines can change when 
+		the dimensions of the editing window change.
 #ce
-Func GUIObjects_Edit_GetLineCount(ByRef $this)
-	
+Func GUIObjects_Edit_GetLineCount(Const ByRef $this)
+	Return _GUICtrlEdit_GetLineCount(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the widths of the left and right margins.
 
-	Return:
-		Success: True. 
-
-		Failure: False. 
+	Returns:
+		Returns an array in the following format:
+			[0] - The width of the left margin
+			[1] - The width of the right margin
 #ce
-Func GUIObjects_Edit_GetMargins(ByRef $this)
-	
+Func GUIObjects_Edit_GetMargins(Const ByRef $this)
+	Return _GUICtrlEdit_GetMargins(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the state of an edit control's modification flag.
 
-	Return:
-		Success: True. 
+	Returns:
+		True: Edit control contents have been modified.
+		False: Edit control contents have not been modified.
 
-		Failure: False. 
+	Remarks:
+		The system automatically clears the modification flag to zero when the control is created.
+		If the user changes the control's text, the system sets the flag to True.
+		You can call _GUICtrlEdit_SetModify() to set or clear the flag.
 #ce
-Func GUIObjects_Edit_GetModify(ByRef $this)
-	
+Func GUIObjects_Edit_GetModify(Const ByRef $this)
+	Return _GUICtrlEdit_GetModify(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Gets the password character that an edit control displays when the user enters text.
 
-	Return:
-		Success: True. 
-
-		Failure: False. 
+	Returns:
+		Returns the character to be displayed in place of any characters typed by the user.
+		If the return value is 0, there is no password character, and the control displays the characters typed by the user.
 #ce
-Func GUIObjects_Edit_GetPasswordChar(ByRef $this)
-	
+Func GUIObjects_Edit_GetPasswordChar(Const ByRef $this)
+	Return _GUICtrlEdit_GetPasswordChar(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the formatting rectangle of an edit control.
 
-	Return:
-		Success: True. 
+	Returns:
+		Returns an array containing the RECT in the following format:
+			[0] - X coordinate of the upper left corner of the rectangle
+			[1] - Y coordinate of the upper left corner of the rectangle
+			[2] - X coordinate of the lower right corner of the rectangle
+			[3] - Y coordinate of the lower right corner of the rectangle
 
-		Failure: False. 
+	Remarks:
+		Under certain conditions, _GUICtrlEdit_GetRECT() might not return the exact values that
+		that were set by _GUICtrlEdit_SetRECT() -— it will be approximately correct, but it 
+		can be off by a few pixels.
 #ce
-Func GUIObjects_Edit_GetRect(ByRef $this)
-	
+Func GUIObjects_Edit_GetRect(Const ByRef $this)
+	Return _GUICtrlEdit_GetRect(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the formatting rectangle of an edit control.
 
-	Return:
-		Success: True. 
+	Returns:
+		Returns a $tagRECT structure that receives the formatting rectangle of an edit control. 
 
-		Failure: False. 
+	Remarks:
+		Under certain conditions, _GUICtrlEdit_GetRECTEx() might not return the exact values that
+		that were set by _GUICtrlEdit_SetRECT() -— it will be approximately correct, but it 
+		can be off by a few pixels.
 #ce
-Func GUIObjects_Edit_GetRectEx(ByRef $this)
-	
+Func GUIObjects_Edit_GetRectEx(Const ByRef $this)
+	Return _GUICtrlEdit_GetRectEx(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Retrieves the starting and ending character positions of the current selection.
 
-	Return:
-		Success: True. 
-
-		Failure: False. 
+	Returns:
+		Returns an array in the following format:
+			[0] - Starting position
+			[1] - Ending position
 #ce
-Func GUIObjects_Edit_GetSel(ByRef $this)
-	
+Func GUIObjects_Edit_GetSel(Const ByRef $this)
+	Return _GUICtrlEdit_GetSel(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Gets the text from the edit control.
 
-	Return:
-		Success: True. 
-
-		Failure: False. 
+	Returns:
+		Success: a string from the edit control. 
+		Failure: an empty string. 
 #ce
-Func GUIObjects_Edit_GetText(ByRef $this)
-	
+Func GUIObjects_Edit_GetText(Const ByRef $this)
+	Return _GUICtrlEdit_GetText(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Gets the length of all the text from the edit control.
 
-	Return:
-		Success: True. 
-
-		Failure: False. 
+	Returns:
+		Returns the length of text in the edit control. 
 #ce
-Func GUIObjects_Edit_GetTextLen(ByRef $this)
-	
+Func GUIObjects_Edit_GetTextLen(Const ByRef $this)
+	Return _GUICtrlEdit_GetTextLen(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Hides any balloon tip associated with an edit control.
 
-	Return:
+	Returns:
 		Success: True. 
-
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_HideBalloonTip(ByRef $this)
-	
+Func GUIObjects_Edit_HideBalloonTip(Const ByRef $this)
+	Return _GUICtrlEdit_HideBalloonTip(HWnd($this.Handle))
 EndFunc
 
 #cs
 	Description:
+		Inserts text into the edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$text: The string of text to insert
+		$index: The character position at which to insert the text
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_InsertText(ByRef $this)
-	
+Func GUIObjects_Edit_InsertText(Const ByRef $this, Const $text, Const $index = -1)
+	_GUICtrlEdit_InsertText(HWnd($this.Handle), $text, $index)
 EndFunc
 
 #cs
 	Description:
+		Retrieves the index of the line that contains the specified character index
 
-	Return:
-		Success: True. 
+	Parameters:
+		$index: The character index of the character contained in the line whose number is to be retrieved
 
-		Failure: False. 
+	Returns:
+		Returns the 0-based line number of the line containing the character index specified by $index. 
+
+	Remarks:
+		If $index is –1, _GUICtrlEdit_LineFromChar() retrieves either the line number of the current line 
+		(the line containing the caret) or, if there is a selection, the line number of the line containing 
+		the beginning of the selection.
 #ce
-Func GUIObjects_Edit_LineFromChar(ByRef $this)
-	
+Func GUIObjects_Edit_LineFromChar(Const ByRef $this, Const $index = -1)
+	Return _GUICtrlEdit_LineFromChar(HWnd($this.Handle), $index)
 EndFunc
 
 #cs
 	Description:
+		Retrieves the character index of the first character of a specified line.
 
-	Return:
-		Success: True. 
+	Parameters:
+		Specifies the 0-based line number
 
-		Failure: False. 
+	Returns:
+		Success: the character index of the line specified in the $index parameter. 
+		Failure: –1 if the specified line number is greater than the number of lines in the edit control. 
 #ce
-Func GUIObjects_Edit_LineIndex(ByRef $this)
-	
+Func GUIObjects_Edit_LineIndex(Const ByRef $this, Const $index = -1)
+	Return _GUICtrlEdit_LineIndex(HWnd($this.Handle), $index)
 EndFunc
 
 #cs
 	Description:
+		Retrieves the length, in characters, of a line.
 
-	Return:
-		Success: True. 
+	Parameters:
+		Specifies the 0-based line index of the line whose length is to be retrieved.
+		–1 specifies the current line number (the line that contains the caret).
 
-		Failure: False. 
+	Returns:
+		Success: the length, in TCHARs, of the line specified by the $index parameter. 
+		Failure: 0, if $index is greater than the number of characters in the control. 
 #ce
-Func GUIObjects_Edit_LineLength(ByRef $this)
-	
+Func GUIObjects_Edit_LineLength(Const ByRef $this, Const $index = -1)
+	Return _GUICtrlEdit_LineLength(HWnd($this.Handle), $index)
 EndFunc
 
 #cs
 	Description:
+		Scrolls the text vertically or horizontally and can be used to scroll horizontally 
+		past the last character of any line.
 
-	Return:
+	Parameters: 
+		$horizontal: Specifies the number of characters to scroll horizontally. 
+		$vertical: Specifies the number of lines to scroll vertically. 
+
+	Returns:
 		Success: True. 
-
 		Failure: False. 
+
+	Remarks:
+		The control does not scroll vertically past the last line of text in the edit control.
+
+		If the current line plus the number of lines specified by the $vertical parameter exceeds the 
+		total number of lines in the edit control, the value is adjusted so that the last line of 
+		the edit control is scrolled to the top of the edit-control window.
 #ce
-Func GUIObjects_Edit_LineScroll(ByRef $this)
-	
+Func GUIObjects_Edit_LineScroll(Const ByRef $this, Const $horizontal, Const $vertical)
+	Return _GUICtrlEdit_LineScroll(HWnd($this.Handle), $horizontal, $vertical)
 EndFunc
 
 #cs
 	Description:
+		Retrieves the client area coordinates of a specified character in an edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$index: The 0-based index of the character.
 
-		Failure: False. 
+	Returns:
+		Returns an array in the following format:
+			[0] - The horizontal coordinate
+			[1] - The vertical coordinate
 #ce
-Func GUIObjects_Edit_PosFromChar(ByRef $this)
-	
+Func GUIObjects_Edit_PosFromChar(Const ByRef $this, Const $index)
+	Return _GUICtrlEdit_PosFromChar(HWnd($this.Handle), $index)	
 EndFunc
 
 #cs
 	Description:
+		Replaces the current selection.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$text: String containing the replacement text.
+		$undo: Specifies whether the replacement operation can be undone:
+				True: The operation can be undone. [Default]
+				False: The operation cannot be undone.
 
-		Failure: False. 
-#ce
-Func GUIObjects_Edit_ReplaceSel(ByRef $this)
+	Returns:
+		None. 
 	
+	Parameters:
+		Use this function to replace only a portion of the text in an 
+		edit control. If there is no current selection, the replacement text is inserted 
+		at the current location of the caret.
+#ce
+Func GUIObjects_Edit_ReplaceSel(Const ByRef $this, Const $text, Const $undo = True)
+	_GUICtrlEdit_ReplaceSel(HWnd($this.Handle), $text, $undo)
 EndFunc
 
 #cs
 	Description:
+		Scrolls the text vertically.
 
-	Return:
-		Success: True. 
+	Parameters:
+		This parameter can be one of the following values:
+			$SB_LINEDOWN: Scrolls down one line
+			$SB_LINEUP: Scrolls up one line
+			$SB_PAGEDOWN: Scrolls down one page
+			$SB_PAGEUP: Scrolls up one page
+			$SB_SCROLLCARET: Scrolls the caret into view
 
-		Failure: False. 
+	Returns:
+		Success: The high-order word of the return value is 1. 
+				 The low-order word is the number of lines that the command scrolls.
+		Failure: 0. 
 #ce
-Func GUIObjects_Edit_Scroll(ByRef $this)
-	
+Func GUIObjects_Edit_Scroll(Const ByRef $this, Const $direction)
+	Return _GUICtrlEdit_Scroll(HWnd($this.Handle), $direction)	
 EndFunc
 
 #cs
 	Description:
+		Sets the cue banner text that is displayed for the edit control.
 
-	Return:
+	Parameters:
+		$text: String that contains the text.
+		$onFocus: 
+			True: if the cue banner should show even when the edit control has focus.
+			False: the cue banner disappears when the user clicks in the control.
+
+	Returns:
 		Success: True. 
-
 		Failure: False. 
+
+	Remarks:
+		The cue banner is the text that is displayed in the edit control when there is no selection.
+		A cue banner will only display in Input and single-line Edit controls - not multi-line Edit or RichText controls.
+		Windows Vista or later.
 #ce
-Func GUIObjects_Edit_SetCueBanner(ByRef $this)
-	
+Func GUIObjects_Edit_SetCueBanner(Const ByRef $this, Const $text, Const $onFocus = False) 
+	Return _GUICtrlEdit_SetCueBanner(HWnd($this.Handle), $text, $onFocus)
 EndFunc
 
 #cs
 	Description:
+		Sets the text limit.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$limit: The maximum number of TCHARs the user can enter
 
-		Failure: False. 
-#ce
-Func GUIObjects_Edit_SetLimitText(ByRef $this)
+	Returns:
+		None. 
 	
+	Remarks:
+		This function limits only the text the user can enter.
+		It does not affect any text already in the edit control when the message is sent, 
+		nor does it affect the length of the text copied to the edit control by the 
+		_GUICtrlEdit_SetText() function.
+
+		If an application uses the _GUICtrlEdit_SetText() function to place more text into 
+		an edit control than is specified in the _GUICtrlEdit_SetLimitText() function, the 
+		user can edit the entire contents of the edit control.
+#ce
+Func GUIObjects_Edit_SetLimitText(Const ByRef $this, Const $limit)
+	_GUICtrlEdit_SetLimitText(HWnd($this.Handle), $limit)
 EndFunc
 
 #cs
 	Description:
+		Sets the widths of the left and right margins.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$margin:
+			Can be one or more of the following:
+				$EC_LEFTMARGIN: Sets the left margin (default)
+				$EC_RIGHTMARGIN: Sets the right margin
+		$left:	
+			The new width of the left margin with the default being $EC_USEFONTINFO
+		$right:
+			The new width of the right margin with the default being $EC_USEFONTINFO
 
-		Failure: False. 
+	Returns:
+		Returns an array in the following format:
+			[0]: The width of the left margin
+			[1]: The width of the right margin
 #ce
-Func GUIObjects_Edit_SetMargins(ByRef $this)
-	
+Func GUIObjects_Edit_SetMargins(Const ByRef $this, Const $margin = 0x1, Const $left = 0xFFFF, Const $right = 0xFFFF)
+	Return _GUICtrlEdit_SetMargins(HWnd($this.Handle), $margin, $left, $right)
 EndFunc
 
 #cs
 	Description:
+		Sets or clears the modification flag
 
-	Return:
-		Success: True. 
+	Parameters:
+		$modified: Specifies the new value for the modification flag:
+				       True: the text has been modified.
+					   False: the text has not been modified.
 
-		Failure: False. 
+	Returns:
+		None. 
+
+	Remarks:
+		The system automatically clears the modification flag to zero when the control is created.
+		If the user changes the control's text, the system sets the flag to nonzero.
+		You can use the _GUICtrlEdit_GetModify() function to retrieve the current state of the flag.
 #ce
-Func GUIObjects_Edit_SetModify(ByRef $this)
-	
+Func GUIObjects_Edit_SetModify(Const ByRef $this, Const $modified)
+	_GUICtrlEdit_SetModify(HWnd($this.Handle), $modified)
 EndFunc
 
 #cs
 	Description:
+		Sets the padding control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$cx: The horizontal padding, in pixels 
+		$cy: The vertical padding, in pixels 
 
-		Failure: False. 
+	Returns:
+		None. 
+
+	Remarks:
+		The padding values are used to create a blank area around the edge of the edit area.
+		The horizontal padding value is applied to both the right and left of the button and 
+		the vertical padding value is applied to both the top and bottom of the edit area.
 #ce
-Func GUIObjects_Edit_SetPadding(ByRef $this)
-	
+Func GUIObjects_Edit_SetPadding(Const ByRef $this, Const $cx, COnst $cy)
+	_GUICtrlEdit_SetPadding(HWnd($this.Handle), $cx, $cy)
 EndFunc
 
 #cs
 	Description:
+		Sets or removes the password character for an edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$displayChar: 
+			The character to be displayed in place of the characters typed by the user
+			If this parameter is zero, the control removes the current password character 
+			and displays the characters typed by the user.
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_SetPasswordChar(ByRef $this)
-	
+Func GUIObjects_Edit_SetPasswordChar(Const ByRef $this, Const $displayChar = '0')
+	_GUICtrlEdit_SetPasswordChar(HWnd($this.Handle), $displayChar)
 EndFunc
 
 #cs
 	Description:
+		Sets or removes the read-only style ($ES_READONLY).
 
-	Return:
+	Parameters:
+		$readOnly: 
+			True: Sets the $ES_READONLY style
+    		False: Removes the $ES_READONLY style
+
+	Returns:
 		Success: True. 
-
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_SetReadOnly(ByRef $this)
-	
+Func GUIObjects_Edit_SetReadOnly(Const ByRef $this, Const $readOnly)
+	Return _GUICtrlEdit_SetReadOnly(HWnd($this.Handle), $readOnly)
 EndFunc
 
 #cs
 	Description:
+		Sets the formatting rectangle of a multiline edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$rect: 
+			Array in the following format:
+				[0] - Specifies the x-coordinate of the upper-left corner of the rectangle.
+				[1] - Specifies the y-coordinate of the upper-left corner of the rectangle.
+				[2] - Specifies the x-coordinate of the lower-right corner of the rectangle.
+				[3] - Specifies the y-coordinate of the lower-right corner of the rectangle.
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_SetRect(ByRef $this)
-	
+Func GUIObjects_Edit_SetRect(Const ByRef $this, Const $rect)
+	_GUICtrlEdit_SetRect(HWnd($this.Handle), $rect)
 EndFunc
 
 #cs
 	Description:
+		Sets the formatting rectangle of a multiline edit control
 
-	Return:
-		Success: True. 
+	Parameters:
+		$rect: 
+			$tagRECT structure that contains formatting rectangle of an edit control
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_SetRectEx(ByRef $this)
-	
+Func GUIObjects_Edit_SetRectEx(Const ByRef $this, Const $tRect)
+	Return _GUICtrlEdit_SetRectEx(HWnd($this.Handle), $tRect)
 EndFunc
 
 #cs
 	Description:
+		Sets the formatting rectangle of a multiline edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$rect: Array in the following format:
+				   [0] - Specifies the x-coordinate of the upper-left corner of the rectangle.
+				   [1] - Specifies the y-coordinate of the upper-left corner of the rectangle.
+				   [2] - Specifies the x-coordinate of the lower-right corner of the rectangle.
+				   [3] - Specifies the y-coordinate of the lower-right corner of the rectangle.
 
-		Failure: False. 
+	Returns:
+		None. 
+
+	Remarks:
+		The _GUICtrlEdit_SetRECTNP() function is identical to the _GUICtrlEdit_SetRECT() 
+		function, except that _GUICtrlEdit_SetRECTNP() does not redraw the edit control window
 #ce
-Func GUIObjects_Edit_SetRectNp(ByRef $this)
-	
+Func GUIObjects_Edit_SetRectNp(Const ByRef $this, Const $rect)
+	_GUICtrlEdit_SetRectNp(HWnd($this.Handle), $rect)
 EndFunc
 
 #cs
 	Description:
+		Sets the formatting rectangle of a multiline edit control.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$rect: $tagRECT structure that contains formatting rectangle of an edit control.
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_SetRectNpEx(ByRef $this)
-	
+Func GUIObjects_Edit_SetRectNpEx(Const ByRef $this, Const $rect)
+	_GUICtrlEdit_SetRectNpEx(HWnd($this.Handle), $rect)
 EndFunc
 
 #cs
 	Description:
+		Selects a range of characters.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$start: Specifies the starting character position of the selection.
+		$end: Specifies the ending character position of the selection.
 
-		Failure: False. 
+	Returns:
+		None. 
+
+	Remarks:
+		The start value can be greater than the end value.
+		The lower of the two values specifies the character position of the first character in the selection.
+		The higher value specifies the position of the first character beyond the selection.
+
+		The start value is the anchor point of the selection, and the end value is the active end.
+		If the user uses the SHIFT key to adjust the size of the selection, the active end can move but the 
+		anchor point remains the same.
+
+		If the $start is 0 and the $end is –1, all the text in the edit control is selected.
+		If the $start is –1, any current selection is deselected.
+
+		The control displays a flashing caret at the $end position regardless of the relative values of 
+		$start and $end.
 #ce
-Func GUIObjects_Edit_SetSel(ByRef $this)
-	
+Func GUIObjects_Edit_SetSel(Const ByRef $this, Const $start, Const $end)
+	_GUICtrlEdit_SetSel(HWnd($this.Handle), $start, $end)
 EndFunc
 
 #cs
 	Description:
+		Sets the tab stops.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$tabStops: Array of tab stops in the following format:
+					[0] - Tab stop 1
+					[1] - Tab stop 2
+					[n] - Tab stop n
 
-		Failure: False. 
+	Returns:
+		True: All the tabs are set. 
+		False: All the tabs are not set. 
 #ce
-Func GUIObjects_Edit_SetTabStops(ByRef $this)
-	
+Func GUIObjects_Edit_SetTabStops(Const ByRef $this, Const $tabStops)
+	Return _GUICtrlEdit_SetTabStops(HWnd($this.Handle), $tabStops)
 EndFunc
 
 #cs
 	Description:
+		Set the text.
 
-	Return:
-		Success: True. 
+	Parameters:
+		$text: String to place in the edit control.
 
-		Failure: False. 
+	Returns:
+		None. 
 #ce
-Func GUIObjects_Edit_SetText(ByRef $this)
-	
+Func GUIObjects_Edit_SetText(Const ByRef $this, Const $text)
+	_GUICtrlEdit_SetText(HWnd($this.Handle), $text)
 EndFunc
 
 #cs
 	Description:
+		Displays a balloon tip associated with an edit control.
 
-	Return:
+	Parameters:
+		$title: String for title of ToolTip (Unicode)
+		$text: String for text of ToolTip (Unicode)
+		$icon: Icon can be one of the following:
+				$TTI_ERROR - Use the error icon
+				$TTI_INFO - Use the information icon
+				$TTI_NONE - Use no icon
+				$TTI_WARNING - Use the warning icon
+
+			The following for Windows Vista or later
+				$TTI_ERROR_LARGE - Use the error icon
+				$TTI_INFO_LARGE - Use the information icon
+				$TTI_WARNING_LARGE - Use the warning icon
+
+	Returns:
 		Success: True. 
-
 		Failure: False. 
 #ce
-Func GUIObjects_Edit_ShowBalloonTip(ByRef $this)
-	
+Func GUIObjects_Edit_ShowBalloonTip(Const ByRef $this, Const $title, Const $text, Const $icon)
+	Return _GUICtrlEdit_ShowBalloonTip(HWnd($this.Handle), $title, $text, $icon)
 EndFunc
 
 #cs
 	Description:
+		Undoes the last edit control operation in the control's undo queue.
 
-	Return:
+	Returns:
 		Success: True. 
-
 		Failure: False. 
+
+	Remarks:
+		An undo operation can also be undone.
+		For example, you can restore deleted text with the first _GUICtrlEdit_Undo(), and remove 
+		the text again with a second _GUICtrlEdit_Undo() as long as there is no intervening 
+		edit operation.
 #ce
-Func GUIObjects_Edit_Undo(ByRef $this)
-	
+Func GUIObjects_Edit_Undo(Const ByRef $this)
+	Return _GUICtrlEdit_Undo(HWnd($this.Handle))
 EndFunc
