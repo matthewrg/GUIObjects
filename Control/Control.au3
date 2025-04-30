@@ -1,12 +1,15 @@
 #include-once
 
 #include <GUIConstantsEx.au3>
+#include <AutoItConstants.au3>
 #include "AVI.au3"
 #include "Button.au3"
 #include "Checkbox.au3"
 #include "Combo.au3"
 #include "Date.au3"
 #include "Edit.au3"
+#include "Label.au3"
+#include "ListBox.au3"
 #include "Menu.au3"
 
 Func Control()
@@ -24,6 +27,7 @@ Func Control()
 	$this.AddMethod("BkColor"      , "GUIObjects_Control_BkColor"      )
 	$this.AddMethod("TextColor"    , "GUIObjects_Control_TextColor"    )
 	$this.AddMethod("SetText"      , "GUIObjects_Control_SetText"      )
+	$this.AddMethod("SetTip"       , "GUIObjects_Control_SetTip"       )
 
     $this.AddProperty("ControlID", $ELSCOPE_PUBLIC)
     $this.AddProperty("Handle"   , $ELSCOPE_PUBLIC)
@@ -88,4 +92,8 @@ EndFunc
 
 Func GUIObjects_Control_Font(Const ByRef $this, Const $size = 8.5, Const $weight = 0, Const $attribute = 0, Const $fontname = '', Const $quality = 0)
 	Return GUICtrlSetFont($this.ControlID, $size, $weight, $attribute, $fontname, $quality)
+EndFunc
+
+Func GUIObjects_Control_SetTip(Const ByRef $this, Const $tipText, Const $title = Default, Const $icon = Default, Const $options = Default)
+    Return GUICtrlSetTip($this.ControlID, $tipText, $title, $icon, $options)
 EndFunc

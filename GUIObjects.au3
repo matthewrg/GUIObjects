@@ -1,12 +1,14 @@
 #include-once
 
-#include <AutoItConstants.au3>
-#include <GUIConstantsEx.au3>
-#include <ColorConstants.au3>
-#include <WindowsConstants.au3>
 #include <AutoItObject.au3>
 
-#include "Form.au3"
+#include <AutoItConstants.au3>
+#include <ColorConstants.au3>
+#include <GUIConstantsEx.au3>
+#include <WindowsConstants.au3>
+
+#include "Control\Control.au3"
+#include "Form\Form.au3"
 
 ; --------------------------------------------------------------------------------------------------------------------------
 ; GUIObjects()

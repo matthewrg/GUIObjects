@@ -3,8 +3,8 @@
 #include <EditConstants.au3>
 #include <ScrollBarsConstants.au3>
 
-Func GUIObjects_Edit(Const ByRef $this, Const $name, Const $text, Const $left, Const $top, Const $width = 150, Const $height = 150, Const $style = 0x003010C4, Const $exStyle = 0x00000200)
-	Local Const $handle = _GUICtrlEdit_Create($text, $left, $top, $width, $height, $style, $exStyle)
+Func GUIObjects_Edit(ByRef $this, Const $name, Const $text, Const $left, Const $top, Const $width = 150, Const $height = 150, Const $style = 0x003010C4, Const $exStyle = 0x00000200)
+	Local Const $handle = _GUICtrlEdit_Create(HWnd($this.Handle), $text, $left, $top, $width, $height, $style, $exStyle)
 
 	Local $ctrl = _AutoItObject_Create(Control())
 	

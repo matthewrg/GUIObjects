@@ -17,6 +17,10 @@ Global Const $button2 = $example1.Button("Button2", "Delete Child Form", 50, 50)
 
 Global Const $button3 = $example1.Button("Button3", "=D", 90, 90)
 
+Global Const $label1 = $example1.Label("Label1", "Label1 =D", 150, 90)
+
+Global Const $listBox1 = $example1.ListBox("ListBox1", "ListBox1", 10, 150)
+
 $example1.AVI("AVI1", @ScriptDir & "\resources\sampleAVI.avi", -1, 150, 10)
 
 $example1.AVI1.Play()
