@@ -11,6 +11,12 @@ Global Const $example1 = $guiObjects.Form("Example1", "Example1 Title", 300, 400
 
 $example1.SetDefBkColor(0x55EE99)
 
+Global Const $menu1 = $example1.Menu("Menu1")
+
+$menu1.InsertMenuItem(0, "Menu Item!")
+
+$menu1.SetMenu()
+
 Global Const $button1 = $example1.Button("Button1", "Delete This Form", 10, 10)
 
 Global Const $button2 = $example1.Button("Button2", "Delete Child Form", 50, 50)
