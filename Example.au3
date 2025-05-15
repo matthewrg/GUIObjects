@@ -9,13 +9,21 @@ Global Const $guiObjects = GUIObjects()
 
 Global Const $example1 = $guiObjects.Form("Example1", "Example1 Title", 300, 400, 300, 500)
 
-$example1.SetDefBkColor(0x55EE99)
+Global Const $fileMenu = $example1.Menu("&File")
 
-Global Const $menu1 = $example1.Menu("Menu1")
+$fileMenu.AddMenuItem("New")
+$fileMenu.AddMenuItem("Open")
+$fileMenu.AddMenuItem("Save")
+$fileMenu.AddMenuItem("")
+$fileMenu.AddMenuItem("Exit")
 
-$menu1.InsertMenuItem(0, "Menu Item!")
+Global Const $myMenu = $example1.Menu("&MyFile")
 
-$menu1.SetMenu()
+$fileMenu.AddMenuItem("MyNew")
+$fileMenu.AddMenuItem("MyOpen")
+$fileMenu.AddMenuItem("MySave")
+$fileMenu.AddMenuItem("")
+$fileMenu.AddMenuItem("MyExit")
 
 Global Const $button1 = $example1.Button("Button1", "Delete This Form", 10, 10)
 
@@ -31,17 +39,14 @@ $example1.AVI("AVI1", @ScriptDir & "\resources\sampleAVI.avi", -1, 150, 10)
 
 $example1.AVI1.Play()
 
-$example1.SetCursor(4, 1)
-
 Global Const $date = $example1.Date("Date1", 140, 140)
 
 $example1.Show()
 
+
 Global Const $child1 = $example1.Child("Child1", "Child1 Example", 250, 350, 305, -20)
 
 $child1.Button("Button1", "=D =D", 90, 90)
-
-$child1.SetCursor(9)
 
 $child1.Show()
 

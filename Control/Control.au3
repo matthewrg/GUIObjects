@@ -11,6 +11,7 @@
 #include "Label.au3"
 #include "ListBox.au3"
 #include "Menu.au3"
+#include "MonthCal.au3"
 
 Func Control()
     Local Const $this = _AutoItObject_Class()
