@@ -3,7 +3,7 @@
 
 _AutoItObject_StartUp()
 
-;Global $oError = ObjEvent("AutoIt.Error", _ErrFunc)
+Global $oError = ObjEvent("AutoIt.Error", _ErrFunc)
 
 Global Const $guiObjects = GUIObjects()
 
@@ -19,11 +19,14 @@ $fileMenu.AddMenuItem("Exit")
 
 Global Const $myMenu = $example1.Menu("&MyFile")
 
-$fileMenu.AddMenuItem("MyNew")
-$fileMenu.AddMenuItem("MyOpen")
-$fileMenu.AddMenuItem("MySave")
-$fileMenu.AddMenuItem("")
-$fileMenu.AddMenuItem("MyExit")
+$myMenu.AddMenuItem("MyNew")
+$myMenu.AddMenuItem("MyOpen")
+$myMenu.AddMenuItem("MySave")
+$myMenu.AddMenuItem("")
+$myMenu.AddMenuItem("MyExit")
+
+ConsoleWrite($myMenu.GetText() & @CRLF)
+ConsoleWrite($myMenu.MyNew.GetText() & @CRLF)
 
 Global Const $button1 = $example1.Button("Button1", "Delete This Form", 10, 10)
 
@@ -43,7 +46,6 @@ Global Const $date = $example1.Date("Date1", 140, 140)
 
 $example1.Show()
 
-
 Global Const $child1 = $example1.Child("Child1", "Child1 Example", 250, 350, 305, -20)
 
 $child1.Button("Button1", "=D =D", 90, 90)
@@ -54,6 +56,14 @@ Do
     Switch GUIGetMsg()
         Case 0
             ContinueLoop
+
+        Case $fileMenu.New 
+            $fileMenu.SetText("=D")
+            $fileMenu.SetColor(0xEEBB99)
+
+        Case $myMenu.MyOpen 
+            $myMenu.SetText("=D")
+            $myMenu.SetColor(0xEEBB99)
             
         Case $button1.ControlID
             $example1.Delete()
